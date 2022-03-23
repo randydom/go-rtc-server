@@ -142,8 +142,13 @@ func (router *Router) GetSubs() map[string]*Sub {
 
 // Alive 判断Router状态
 func (router *Router) Alive() bool {
-	if router.stop || router.pub == nil || router.pub.stop || !router.pub.alive {
+	if router.stop {
 		return false
+	}
+	if router.pub != nil {
+		if router.pub.stop || !router.pub.alive {
+			return false
+		}
 	}
 	return true
 	// 判断流状态
