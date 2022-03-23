@@ -50,6 +50,7 @@ func (router *Router) AddPub(mid, sdp string) (string, error) {
 	answer, err := pub.Answer(offer)
 	if err != nil {
 		logger.Errorf("router pub answer err=%v, id=%s, mid=%s", err, router.Id, mid)
+		pub.Close()
 		return "", err
 	}
 
@@ -100,6 +101,7 @@ func (router *Router) AddSub(sid, sdp string) (string, error) {
 	answer, err := sub.Answer(offer)
 	if err != nil {
 		logger.Errorf("router sub offer err=%v, id=%s, sid=%s", err, router.Id, sid)
+		sub.Close()
 		return "", err
 	}
 
@@ -151,7 +153,6 @@ func (router *Router) Alive() bool {
 		}
 	}
 	return true
-	// 判断流状态
 	//bAudio := !router.audioAlive.Before(time.Now())
 	//bVideo := !router.videoAlive.Before(time.Now())
 	//return (bAudio || bVideo)
