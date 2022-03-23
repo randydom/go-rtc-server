@@ -113,6 +113,11 @@ func (router *Router) AddSub(sid, sdp string) (string, error) {
 }
 
 // GetSub 获取Sub对象
+func (router *Router) GetPub() *Pub {
+	return router.pub
+}
+
+// GetSub 获取Sub对象
 func (router *Router) GetSub(sid string) *Sub {
 	router.subsLock.Lock()
 	defer router.subsLock.Unlock()
@@ -131,8 +136,8 @@ func (router *Router) DelSub(sid string) {
 }
 
 // GetSubCount 获取subs数量
-func (router *Router) GetSubCount() int {
-	return len(router.subs)
+func (router *Router) GetSubs() map[string]*Sub {
+	return router.subs
 }
 
 // Alive 判断Router状态

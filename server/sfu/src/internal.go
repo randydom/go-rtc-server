@@ -6,7 +6,6 @@ import (
 	"server/pkg/util"
 	"server/server/sfu/rtc"
 
-	"github.com/zhuanxin-sz/go-protoo/logger"
 	nprotoo "github.com/zhuanxin-sz/nats-protoo"
 )
 
@@ -48,7 +47,7 @@ func handleRPCRequest(request map[string]interface{}, accept nprotoo.AcceptFunc,
 */
 // publish 处理推流
 func publish(msg map[string]interface{}) (map[string]interface{}, *nprotoo.Error) {
-	logger.Debugf("sfu.publish msg=%v", msg)
+	//logger.Debugf("sfu.publish msg=%v", msg)
 	// 获取参数
 	if msg["jsep"] == nil {
 		return nil, &nprotoo.Error{Code: 401, Reason: "can't find jsep"}
@@ -83,7 +82,7 @@ func publish(msg map[string]interface{}) (map[string]interface{}, *nprotoo.Error
 */
 // unpublish 处理取消发布流
 func unpublish(msg map[string]interface{}) (map[string]interface{}, *nprotoo.Error) {
-	logger.Debugf("sfu.unpublish msg=%v", msg)
+	//logger.Debugf("sfu.unpublish msg=%v", msg)
 	// 获取参数
 	rid := util.Val(msg, "rid")
 	mid := util.Val(msg, "mid")
@@ -100,7 +99,7 @@ func unpublish(msg map[string]interface{}) (map[string]interface{}, *nprotoo.Err
 */
 // subscribe 处理订阅流
 func subscribe(msg map[string]interface{}) (map[string]interface{}, *nprotoo.Error) {
-	logger.Debugf("sfu.subscribe msg=%v", msg)
+	//logger.Debugf("sfu.subscribe msg=%v", msg)
 	// 获取参数
 	if msg["jsep"] == nil {
 		return nil, &nprotoo.Error{Code: 401, Reason: "can't find jsep"}
@@ -138,7 +137,7 @@ func subscribe(msg map[string]interface{}) (map[string]interface{}, *nprotoo.Err
 */
 // unsubscribe 处理取消订阅流
 func unsubscribe(msg map[string]interface{}) (map[string]interface{}, *nprotoo.Error) {
-	logger.Debugf("sfu.unsubscribe msg=%v", msg)
+	//logger.Debugf("sfu.unsubscribe msg=%v", msg)
 	// 获取参数
 	rid := util.Val(msg, "rid")
 	mid := util.Val(msg, "mid")

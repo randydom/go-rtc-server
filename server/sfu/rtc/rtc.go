@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/pion/webrtc/v2"
+	"github.com/zhuanxin-sz/go-protoo/logger"
 )
 
 const (
@@ -86,6 +87,7 @@ func GetRouter(id string) *Router {
 
 // AddRouter 增加Router
 func AddRouter(id string) *Router {
+	logger.Debugf("add router = %s", id)
 	router := NewRouter(id)
 	routersLock.Lock()
 	defer routersLock.Unlock()
@@ -97,6 +99,7 @@ func AddRouter(id string) *Router {
 func DelRouter(id string) {
 	router := GetRouter(id)
 	if router != nil {
+		logger.Debugf("del router = %s", id)
 		router.Close()
 		routersLock.Lock()
 		defer routersLock.Unlock()
@@ -113,17 +116,16 @@ func CheckRoute() {
 			return
 		}
 
-		//select {
 		<-t.C
 		routersLock.Lock()
 		for id, Router := range routers {
 			if !Router.Alive() {
+				logger.Debugf("router is dead = %s", id)
 				Router.Close()
 				delete(routers, id)
 				CleanRouter <- id
 			}
 		}
 		routersLock.Unlock()
-		//}
 	}
 }

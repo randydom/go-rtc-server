@@ -76,7 +76,12 @@ func UpdatePayload() {
 		var streamcnt int = 0
 		for _, router := range rtc.GetRouters() {
 			streamcnt++
-			streamcnt += router.GetSubCount()
+			logger.Debugf("router id = %s", router.Id)
+			logger.Debugf("router pub id = %s", router.GetPub().Id)
+			for _, sub := range router.GetSubs() {
+				streamcnt++
+				logger.Debugf("router sub id = %s", sub.Id)
+			}
 		}
 		node.UpdateNodePayload(streamcnt)
 	}

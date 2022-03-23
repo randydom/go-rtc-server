@@ -15,7 +15,7 @@ const (
 )
 
 type Pub struct {
-	id    string
+	Id    string
 	stop  bool
 	alive bool
 	pc    *webrtc.PeerConnection
@@ -62,7 +62,7 @@ func NewPub(pid string) (*Pub, error) {
 	}
 
 	pub := &Pub{
-		id:         pid,
+		Id:         pid,
 		pc:         pcnew,
 		stop:       false,
 		alive:      true,
@@ -80,15 +80,15 @@ func NewPub(pid string) (*Pub, error) {
 // OnPeerConnect Pub连接状态回调
 func (pub *Pub) OnPeerConnect(state webrtc.PeerConnectionState) {
 	if state == webrtc.PeerConnectionStateConnected {
-		logger.Debugf("pub peer connected = %s", pub.id)
+		logger.Debugf("pub peer connected = %s", pub.Id)
 		pub.alive = true
 	}
 	if state == webrtc.PeerConnectionStateDisconnected {
-		logger.Debugf("pub peer disconnected = %s", pub.id)
+		logger.Debugf("pub peer disconnected = %s", pub.Id)
 		pub.alive = false
 	}
 	if state == webrtc.PeerConnectionStateFailed {
-		logger.Debugf("pub peer failed = %s", pub.id)
+		logger.Debugf("pub peer failed = %s", pub.Id)
 		pub.alive = false
 	}
 }
@@ -97,19 +97,19 @@ func (pub *Pub) OnPeerConnect(state webrtc.PeerConnectionState) {
 func (pub *Pub) OnTrackRemote(track *webrtc.Track, receiver *webrtc.RTPReceiver) {
 	if track.Kind() == webrtc.RTPCodecTypeAudio {
 		pub.TrackAudio = receiver
-		logger.Debugf("OnTrackRemote pub audio = %s", pub.id)
+		logger.Debugf("OnTrackRemote pub audio = %s", pub.Id)
 		go pub.DoAudioRtp()
 	}
 	if track.Kind() == webrtc.RTPCodecTypeVideo {
 		pub.TrackVideo = receiver
-		logger.Debugf("OnTrackRemote pub video = %s", pub.id)
+		logger.Debugf("OnTrackRemote pub video = %s", pub.Id)
 		go pub.DoVideoRtp()
 	}
 }
 
 // Close 关闭连接
 func (pub *Pub) Close() {
-	logger.Debugf("pub close = %s", pub.id)
+	logger.Debugf("pub close = %s", pub.Id)
 	pub.stop = true
 	pub.pc.Close()
 }
@@ -118,19 +118,19 @@ func (pub *Pub) Close() {
 func (pub *Pub) Answer(offer webrtc.SessionDescription) (webrtc.SessionDescription, error) {
 	err := pub.pc.SetRemoteDescription(offer)
 	if err != nil {
-		logger.Errorf("pub set offer err=%v, pubid=%s", err, pub.id)
+		logger.Errorf("pub set offer err=%v, pubid=%s", err, pub.Id)
 		return webrtc.SessionDescription{}, err
 	}
 
 	answer, err := pub.pc.CreateAnswer(nil)
 	if err != nil {
-		logger.Errorf("pub create answer err=%v, pubid=%s", err, pub.id)
+		logger.Errorf("pub create answer err=%v, pubid=%s", err, pub.Id)
 		return webrtc.SessionDescription{}, err
 	}
 
 	err = pub.pc.SetLocalDescription(answer)
 	if err != nil {
-		logger.Errorf("pub set answer err=%v, pubid=%s", err, pub.id)
+		logger.Errorf("pub set answer err=%v, pubid=%s", err, pub.Id)
 		return webrtc.SessionDescription{}, err
 	}
 	return answer, err
