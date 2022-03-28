@@ -10,7 +10,7 @@ import (
 )
 
 const (
-	statCycle    = 3 * time.Second
+	statCycle    = 5 * time.Second
 	maxCleanSize = 100
 )
 
@@ -73,8 +73,6 @@ func GetOrNewRouter(id string) *Router {
 
 // GetRouters 获取所有Router
 func GetRouters() map[string]*Router {
-	routersLock.Lock()
-	defer routersLock.Unlock()
 	return routers
 }
 
