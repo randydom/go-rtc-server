@@ -52,12 +52,14 @@ func NewPub(pid string) (*Pub, error) {
 	_, err = pcnew.AddTransceiverFromKind(webrtc.RTPCodecTypeAudio, webrtc.RtpTransceiverInit{Direction: webrtc.RTPTransceiverDirectionRecvonly})
 	if err != nil {
 		logger.Errorf("pub add audio recv err=%v, pubid=%s", err, pid)
+		pcnew.Close()
 		return nil, err
 	}
 
 	_, err = pcnew.AddTransceiverFromKind(webrtc.RTPCodecTypeVideo, webrtc.RtpTransceiverInit{Direction: webrtc.RTPTransceiverDirectionRecvonly})
 	if err != nil {
 		logger.Errorf("pub add video recv err=%v, pubid=%s", err, pid)
+		pcnew.Close()
 		return nil, err
 	}
 

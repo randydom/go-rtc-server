@@ -54,6 +54,8 @@ func (router *Router) AddPub(mid, sdp string) (string, error) {
 		return "", err
 	}
 
+	logger.Debugf("router add pub = ", pub.Id)
+
 	router.pub = pub
 	// 启动RTP处理线程
 	go router.DoAudioWork()
@@ -75,6 +77,7 @@ func (router *Router) AddSub(sid, sdp string) (string, error) {
 				err = sub.AddTrack(router.pub.TrackAudio.Track())
 				if err != nil {
 					logger.Errorf("router sub add audio track err=%v, id=%s, sid=%s", err, router.Id, sid)
+					sub.Close()
 					return "", err
 				}
 			}
@@ -87,6 +90,7 @@ func (router *Router) AddSub(sid, sdp string) (string, error) {
 				err = sub.AddTrack(router.pub.TrackVideo.Track())
 				if err != nil {
 					logger.Errorf("router sub add video track err=%v, id=%s, sid=%s", err, router.Id, sid)
+					sub.Close()
 					return "", err
 				}
 			}
@@ -94,6 +98,7 @@ func (router *Router) AddSub(sid, sdp string) (string, error) {
 	}
 
 	if sub.TrackAudio == nil && sub.TrackVideo == nil {
+		sub.Close()
 		return "", errors.New("router sub no audio and video track")
 	}
 
@@ -104,6 +109,8 @@ func (router *Router) AddSub(sid, sdp string) (string, error) {
 		sub.Close()
 		return "", err
 	}
+
+	logger.Debugf("router add sub = ", sub.Id)
 
 	router.subsLock.Lock()
 	router.subs[sid] = sub
