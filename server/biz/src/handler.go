@@ -99,7 +99,7 @@ func join(peer *ws.Peer, msg map[string]interface{}, accept ws.AcceptFunc, rejec
 			// 发送广播给所有人
 			SendNotifyByUid(rid, uid, proto.BizToBizOnLeave, resp)
 			// 通知本地对象
-			rooms.NotifyWithUid(rid, uid, proto.BizToClientOnKick, resp)
+			//rooms.NotifyWithUid(rid, uid, proto.BizToClientOnKick, resp)
 			// 删除本地对象
 			room := rooms.GetRoom(rid)
 			if room != nil {

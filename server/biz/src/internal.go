@@ -73,7 +73,7 @@ func peerKick(data map[string]interface{}) (map[string]interface{}, *nprotoo.Err
 	SendNotifyByUid(rid, uid, proto.BizToBizOnLeave, resp)
 
 	// 通知客户端
-	NotifyPeerWithID(rid, uid, proto.BizToClientOnKick, util.Map("rid", rid, "uid", uid))
+	//NotifyPeerWithID(rid, uid, proto.BizToClientOnKick, util.Map("rid", rid, "uid", uid))
 
 	// 删除本地对象
 	room := rooms.GetRoom(rid)
