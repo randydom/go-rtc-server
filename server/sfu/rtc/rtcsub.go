@@ -90,6 +90,8 @@ func (sub *Sub) Close() {
 	logger.Debugf("sub close = %s", sub.Id)
 	sub.stop = true
 	sub.pc.Close()
+	close(sub.RtcpAudioCh)
+	close(sub.RtcpVideoCh)
 }
 
 // AddTrack 增加Track
@@ -142,7 +144,6 @@ func (sub *Sub) DoAudioRtcp() {
 	if sub.TrackAudio != nil {
 		for {
 			if sub.stop || !sub.alive {
-				close(sub.RtcpAudioCh)
 				return
 			}
 
@@ -153,6 +154,9 @@ func (sub *Sub) DoAudioRtcp() {
 				}
 			} else {
 				for _, rtcp := range rtcps {
+					if sub.stop || !sub.alive {
+						return
+					}
 					sub.RtcpAudioCh <- rtcp
 				}
 			}
@@ -165,7 +169,6 @@ func (sub *Sub) DoVideoRtcp() {
 	if sub.TrackVideo != nil {
 		for {
 			if sub.stop || !sub.alive {
-				close(sub.RtcpVideoCh)
 				return
 			}
 
@@ -176,6 +179,9 @@ func (sub *Sub) DoVideoRtcp() {
 				}
 			} else {
 				for _, rtcp := range rtcps {
+					if sub.stop || !sub.alive {
+						return
+					}
 					sub.RtcpVideoCh <- rtcp
 				}
 			}

@@ -158,11 +158,12 @@ func (router *Router) Alive() bool {
 		if router.pub.stop || !router.pub.alive {
 			return false
 		}
+
+		bAudio := !router.audioAlive.Before(time.Now())
+		bVideo := !router.videoAlive.Before(time.Now())
+		return (bAudio || bVideo)
 	}
 	return true
-	//bAudio := !router.audioAlive.Before(time.Now())
-	//bVideo := !router.videoAlive.Before(time.Now())
-	//return (bAudio || bVideo)
 }
 
 // Close 关闭Router
@@ -190,6 +191,7 @@ func (router *Router) DoAudioWork() {
 		if router.pub != nil && router.pub.TrackAudio != nil {
 			pkt, err := router.pub.ReadAudioRTP()
 			if err == nil {
+				router.audioAlive = time.Now().Add(liveCycle)
 				router.subsLock.Lock()
 				for sid, sub := range router.subs {
 					if sub.stop || !sub.alive {
@@ -217,6 +219,7 @@ func (router *Router) DoVideoWork() {
 		if router.pub != nil && router.pub.TrackVideo != nil {
 			pkt, err := router.pub.ReadVideoRTP()
 			if err == nil {
+				router.videoAlive = time.Now().Add(liveCycle)
 				router.subsLock.Lock()
 				for sid, sub := range router.subs {
 					if sub.stop || !sub.alive {

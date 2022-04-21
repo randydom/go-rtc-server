@@ -114,6 +114,8 @@ func (pub *Pub) Close() {
 	logger.Debugf("pub close = %s", pub.Id)
 	pub.stop = true
 	pub.pc.Close()
+	close(pub.RtpAudioCh)
+	close(pub.RtpVideoCh)
 }
 
 // Answer SDP交换
@@ -143,7 +145,6 @@ func (pub *Pub) DoAudioRtp() {
 	if pub.TrackAudio != nil && pub.TrackAudio.Track() != nil {
 		for {
 			if pub.stop || !pub.alive {
-				close(pub.RtpAudioCh)
 				return
 			}
 
@@ -154,6 +155,9 @@ func (pub *Pub) DoAudioRtp() {
 					logger.Errorf("pub.TrackAudio ReadRTP error io.EOF")
 				}
 			} else {
+				if pub.stop || !pub.alive {
+					return
+				}
 				pub.RtpAudioCh <- rtp
 			}
 		}
@@ -165,7 +169,6 @@ func (pub *Pub) DoVideoRtp() {
 	if pub.TrackVideo != nil && pub.TrackVideo.Track() != nil {
 		for {
 			if pub.stop || !pub.alive {
-				close(pub.RtpVideoCh)
 				return
 			}
 
@@ -176,6 +179,9 @@ func (pub *Pub) DoVideoRtp() {
 					logger.Errorf("pub.TrackVideo ReadRTP error io.EOF")
 				}
 			} else {
+				if pub.stop || !pub.alive {
+					return
+				}
 				pub.RtpVideoCh <- rtp
 			}
 		}
