@@ -191,6 +191,7 @@ func (router *Router) DoAudioWork() {
 		if router.pub != nil && router.pub.TrackAudio != nil {
 			pkt, err := router.pub.ReadAudioRTP()
 			if err == nil {
+				logger.Debugf("pub %s recv audio rtp = %d", router.pub.Id, pkt.SequenceNumber)
 				router.audioAlive = time.Now().Add(liveCycle)
 				router.subsLock.Lock()
 				for sid, sub := range router.subs {
@@ -198,7 +199,11 @@ func (router *Router) DoAudioWork() {
 						sub.Close()
 						delete(router.subs, sid)
 					} else {
-						sub.WriteAudioRtp(pkt)
+						logger.Debugf("sub %s send audio rtp = %d", sub.Id, pkt.SequenceNumber)
+						err = sub.WriteAudioRtp(pkt)
+						if err != nil {
+							logger.Debugf("sub %s send audio rtp = %d err = %v", sub.Id, pkt.SequenceNumber, err)
+						}
 					}
 				}
 				router.subsLock.Unlock()
