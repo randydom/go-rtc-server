@@ -22,6 +22,6 @@ url = "127.0.0.1:4222"
 urls = ["stun:120.238.78.214:3478"]
 
 [[webrtc.iceserver]]
-urls = ["turn:120.238.78.214:3478"]
-username = "demo"
-credential = "123456"
+# urls = ["turn:120.238.78.214:3478"]
+# username = "demo"
+# credential = "123456"

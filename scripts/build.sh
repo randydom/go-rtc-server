@@ -20,7 +20,7 @@ BUILD_PATH3=$APP_DIR/bin/$SFU_BIN
 help(){
     echo ""
     echo "build script"
-    echo "Usage: ./build.sh biz|islb|sfu|issr|all [arch]"
+    echo "Usage: ./build.sh biz|islb|sfu|all [arch]"
     echo "Usage: ./build.sh [-h]"
     echo ""
 }

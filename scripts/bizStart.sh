@@ -25,11 +25,11 @@ BUILD_PATH3=$APP_DIR/bin/$SFU
 echo "------------------start $BIZ------------------"
 echo "nohup $BUILD_PATH1 -c $BIZ_CFG >>$BIZ_LOG 2>&1 &"
 nohup $BUILD_PATH1 -c $BIZ_CFG >>$BIZ_LOG 2>&1 &
-sleep 1s
-echo "------------------start $ISLB------------------"
-echo "nohup $BUILD_PATH2 -c $ISLB_CFG >>$ISLB_LOG 2>&1 &"
-nohup $BUILD_PATH2 -c $ISLB_CFG >>$ISLB_LOG 2>&1 &
-sleep 1s
-echo "------------------start $SFU------------------"
-echo "nohup $BUILD_PATH3 -c $SFU_CFG >>$SFU_LOG 2>&1 &"
-nohup $BUILD_PATH3 -c $SFU_CFG >>$SFU_LOG 2>&1 &
+# sleep 1s
+# echo "------------------start $ISLB------------------"
+# echo "nohup $BUILD_PATH2 -c $ISLB_CFG >>$ISLB_LOG 2>&1 &"
+# nohup $BUILD_PATH2 -c $ISLB_CFG >>$ISLB_LOG 2>&1 &
+# sleep 1s
+# echo "------------------start $SFU------------------"
+# echo "nohup $BUILD_PATH3 -c $SFU_CFG >>$SFU_LOG 2>&1 &"
+# nohup $BUILD_PATH3 -c $SFU_CFG >>$SFU_LOG 2>&1 &
