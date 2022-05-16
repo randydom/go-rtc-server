@@ -54,7 +54,7 @@ func (router *Router) AddPub(mid, sdp string) (string, error) {
 		return "", err
 	}
 
-	logger.Debugf("router add pub = ", pub.Id)
+	logger.Debugf("router add pub = %s", pub.Id)
 
 	router.pub = pub
 	// 启动RTP处理线程
@@ -110,7 +110,7 @@ func (router *Router) AddSub(sid, sdp string) (string, error) {
 		return "", err
 	}
 
-	logger.Debugf("router add sub = ", sub.Id)
+	logger.Debugf("router add sub = %s", sub.Id)
 
 	router.subsLock.Lock()
 	router.subs[sid] = sub
