@@ -71,9 +71,21 @@ func GetOrNewRouter(id string) *Router {
 	return router
 }
 
-// GetRouters 获取所有Router
-func GetRouters() map[string]*Router {
-	return routers
+// GetRouters 获取Routers所有负载
+func GetRouters() int {
+	routersLock.Lock()
+	defer routersLock.Unlock()
+	nCount := 0
+	for _, router := range routers {
+		logger.Debugf("router id = %s", router.Id)
+		pub := router.GetPub()
+		if pub != nil {
+			nCount++
+			logger.Debugf("router pub id = %s", pub.Id)
+		}
+		nCount = nCount + router.GetSubs()
+	}
+	return nCount
 }
 
 // GetRouter 获取Router

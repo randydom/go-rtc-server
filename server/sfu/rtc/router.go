@@ -145,8 +145,15 @@ func (router *Router) DelSub(sid string) {
 }
 
 // GetSubCount 获取subs数量
-func (router *Router) GetSubs() map[string]*Sub {
-	return router.subs
+func (router *Router) GetSubs() int {
+	router.subsLock.Lock()
+	defer router.subsLock.Unlock()
+	nCount := 0
+	for _, sub := range router.subs {
+		nCount++
+		logger.Debugf("router sub id = %s", sub.Id)
+	}
+	return nCount
 }
 
 // Alive 判断Router状态
