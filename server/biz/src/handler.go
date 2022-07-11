@@ -233,7 +233,8 @@ func keepalive(peer *ws.Peer, msg map[string]interface{}, accept ws.AcceptFunc, 
       "minfo": {
 	  	"audio": true,
 	  	"video": true,
-		"videotype": 0
+		"audiotype": 0,
+		"videotype": 0,
 	  }
   }
 */
